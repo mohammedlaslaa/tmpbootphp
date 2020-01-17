@@ -121,7 +121,7 @@
     return $interval->format('%R%a days');
   }
 
-  echo getNbDay('19-01-2019', '20-01-2020');
+  echo getNbDay('19-01-2018', '20-01-2020');
 
   function increase(&$x): void
   {
@@ -140,11 +140,49 @@
 
   echo "<br>";
 
-  echo password_hash("hekdkdkd", PASSWORD_DEFAULT);
+  echo password_hash("mohammed", PASSWORD_DEFAULT);
+
+  // Null coalescing operator is a shortcut of the ternary operator
+
+  $testoperator = isset($_POST['name']) ? $_POST['name'] : '';
+
+  $testoperator = $_POST['name'] ?? '';
 
 
+  $nameFileDateOfTheDay = date("d-m-Y");
 
+  $createFile = "log/$nameFileDateOfTheDay.txt";
+
+  if (!file_exists($createFile)) {
+    $x = 1;
+    file_put_contents($createFile, $x);
+  } else {
+    $y = (int) file_get_contents($createFile);
+    $y += 1;
+    file_put_contents($createFile, $y);
+  }
   ?>
+
+  <a href="?delete=ok">SUPPRIME MOI !<a>
+
+      <?php
+
+      $testy = $_GET["delete"] ?? "";
+
+      function deleteLog($arg)
+      {
+        if (is_dir($arg)) {
+          array_map('unlink', glob("$arg/*.txt"));
+        } else {
+          return "Ce n'est pas un dossier valide";
+        }
+      }
+
+      if ($testy == "ok") {
+        deleteLog('log');
+      }
+
+      ?>
 </body>
 
 </html>
