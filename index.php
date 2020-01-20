@@ -1,3 +1,11 @@
+<?php
+setcookie('ip', $_SERVER['REMOTE_ADDR']);
+
+$ynum = (int) file_get_contents("log/" . date('d-m-Y') . ".txt");
+$affichecount = "hello vous êtes le visiteur numéro : " . $ynum += 1;
+setcookie('number', 1);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +28,27 @@
 
 <body>
   <?php
+  if (!isset($_COOKIE['ip'])) {
+    echo $affichecount;
+  }
 
+  if (isset($_COOKIE['arrayfruit'])) {
+    var_dump(unserialize($_COOKIE['arrayfruit']), false);
+    foreach (unserialize($_COOKIE['arrayfruit']) as $val) {
+      echo $val . "<br>";
+    }
+  }
+
+  if (isset($_COOKIE['arrayfruit2'])) {
+    var_dump(unserialize($_COOKIE['arrayfruit2']), false);
+    foreach (unserialize($_COOKIE['arrayfruit2']) as $val) {
+      echo $val . "<br>";
+    }
+  }
+
+  echo "vardump" ;
+  
+  var_dump($_COOKIE);
 
   // Display the date
   var_dump(getdate());
@@ -55,10 +83,9 @@
 
   //Start session global variable
 
+  // session_start();
 
-  session_start();
-
-  $_SESSION["salut"] = "coucou";
+  // $_SESSION["salut"] = "coucou";
 
   /****** Read file ******/
 
@@ -156,11 +183,13 @@
   if (!file_exists($createFile)) {
     $x = 1;
     file_put_contents($createFile, $x);
-  } else {
+  } elseif ($_COOKIE['ip'] !== $_SERVER['REMOTE_ADDR']) {
     $y = (int) file_get_contents($createFile);
     $y += 1;
     file_put_contents($createFile, $y);
   }
+  echo "<br>";
+
   ?>
 
   <a href="?delete=ok">SUPPRIME MOI !<a>
@@ -181,6 +210,34 @@
       if ($testy == "ok") {
         deleteLog('log');
       }
+
+      echo "<br>";
+
+      echo date("d-m-Y", filemtime('./index2.php'));
+
+      echo "<br>";
+
+      var_dump(stat('./index2.php'));
+
+      $txt = nl2br("texte 
+      texte
+      texte");
+
+      echo $txt;
+
+      // $test = "bonjour";
+
+      // unset($test);
+
+      // echo $test
+      ?>
+
+      <?= $title ?? "Bonjour"; ?>
+
+      <?= "Heeeeeeeeeyy" ?>
+
+      <?php
+
 
       ?>
 </body>
