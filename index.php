@@ -1,245 +1,260 @@
 <?php
-setcookie('ip', $_SERVER['REMOTE_ADDR']);
 
-$ynum = (int) file_get_contents("log/" . date('d-m-Y') . ".txt");
-$affichecount = "hello vous êtes le visiteur numéro : " . $ynum += 1;
-setcookie('number', 1);
+if (isset($_GET['name']) && $_GET['name'] == 'redirect') {
+  header('Location: http://www.google.com/');
+};
+
+$filename2 = md5($_SERVER['REQUEST_URI']);
+$dateinst = time();
+$datefile = filemtime('./cache/' . $filename2);
+if (file_exists('./cache/' . $filename2) && ($dateinst - $datefile) < (3600 * 3)) {
+  readfile('./cache/' . $filename2);
+} else {
+  ob_start();
+  setcookie('ip', $_SERVER['REMOTE_ADDR']);
+
+  $ynum = (int) file_get_contents("log/" . date('d-m-Y') . ".txt");
+  $affichecount = "hello vous êtes le visiteur numéro : " . $ynum += 1;
+  setcookie('number', 1);
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
+  <!DOCTYPE html>
+  <html lang="en">
 
-<head>
+  <head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <title>Blog Home - Start Bootstrap Template</title>
+    <title>Blog Home - Start Bootstrap Template</title>
 
-  <!-- Bootstrap core CSS -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Custom styles for this template -->
-  <link href="css/blog-home.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/blog-home.css" rel="stylesheet">
 
-</head>
+  </head>
 
-<body>
-  <?php
-  if (!isset($_COOKIE['ip'])) {
-    echo $affichecount;
-  }
-
-  if (isset($_COOKIE['arrayfruit'])) {
-    var_dump(unserialize($_COOKIE['arrayfruit']), false);
-    foreach (unserialize($_COOKIE['arrayfruit']) as $val) {
-      echo $val . "<br>";
+  <body>
+    <?php
+    if (!isset($_COOKIE['ip'])) {
+      echo $affichecount;
     }
-  }
 
-  if (isset($_COOKIE['arrayfruit2'])) {
-    var_dump(unserialize($_COOKIE['arrayfruit2']), false);
-    foreach (unserialize($_COOKIE['arrayfruit2']) as $val) {
-      echo $val . "<br>";
+    if (isset($_COOKIE['arrayfruit'])) {
+      var_dump(unserialize($_COOKIE['arrayfruit']), false);
+      foreach (unserialize($_COOKIE['arrayfruit']) as $val) {
+        echo $val . "<br>";
+      }
     }
-  }
 
-  echo "vardump" ;
-  
-  var_dump($_COOKIE);
+    if (isset($_COOKIE['arrayfruit2'])) {
+      var_dump(unserialize($_COOKIE['arrayfruit2']), false);
+      foreach (unserialize($_COOKIE['arrayfruit2']) as $val) {
+        echo $val . "<br>";
+      }
+    }
 
-  // Display the date
-  var_dump(getdate());
+    echo "vardump";
 
-  $date = getdate();
+    var_dump($_COOKIE);
 
-  echo $date['year'];
+    // Display the date
+    var_dump(getdate());
 
-  echo "<br>";
+    $date = getdate();
 
-  // Set the default date
+    echo $date['year'];
 
-  date_default_timezone_set('Europe/Paris');
+    echo "<br>";
 
-  $x = strtotime("-1week");
+    // Set the default date
 
-  echo $x;
+    date_default_timezone_set('Europe/Paris');
 
-  echo "<br>";
+    $x = strtotime("-1week");
 
-  echo date("d-m-Y", $x);
+    echo $x;
 
-  echo "<br>";
+    echo "<br>";
 
-  echo date("Y-m-d H:i:s");
+    echo date("d-m-Y", $x);
 
-  echo "<br>";
+    echo "<br>";
 
-  echo date("d-m-Y H:i:s") . "<br>";
+    echo date("Y-m-d H:i:s");
 
-  echo time();
+    echo "<br>";
 
-  //Start session global variable
+    echo date("d-m-Y H:i:s") . "<br>";
 
-  // session_start();
+    echo time();
 
-  // $_SESSION["salut"] = "coucou";
+    //Start session global variable
 
-  /****** Read file ******/
+    // session_start();
 
-  require_once('element/nav.php');
+    // $_SESSION["salut"] = "coucou";
 
-  // Test isset
+    /****** Read file ******/
 
-  $form = isset($_GET["contact"]) ? "form" : "";
+    require_once('element/nav.php');
 
-  // display the file depending the key value
+    // Test isset
 
-  if ($form == "form") {
-    require_once('element/contact.php');
-  } else {
-    require_once('element/main.php');
-  }
+    $form = isset($_GET["contact"]) ? "form" : "";
 
-  require_once('element/footer.php');
+    // display the file depending the key value
 
-  // Test an existing file
-
-  $x = file_exists('element/script.php');
-
-  if ($x) {
-    require_once('element/script.php');
-  }
-
-  // Open new file and write it
-
-  $myfile = fopen("newfile.php", "w") or die("Unable to open file!");
-  $txt = "<h1>New File !</h1>";
-  fwrite($myfile, $txt); // Then you can require it in this file
-
-  // all information of the server
-
-  //  var_dump($_SERVER);
-
-  function getMinDate($arg1, $arg2 = false)
-  {
-    $x = strtotime($arg1);
-    if (!$arg2) {
-      $y = time();
+    if ($form == "form") {
+      require_once('element/contact.php');
     } else {
-      $y = strtotime($arg2);
+      require_once('element/main.php');
     }
-    if ($x > $y) {
-      return $arg1 . " est plus récent que " . date('d-m-y', $y) . " et son timestamp est " . $x;
-    } elseif ($y > $x) {
-      return date('d-m-y', $y) . " est plus récent que " . $arg1 . " et son timestamp est " . $y;
+
+    require_once('element/footer.php');
+
+    // Test an existing file
+
+    $x = file_exists('element/script.php');
+
+    if ($x) {
+      require_once('element/script.php');
     }
-  }
 
-  echo getMinDate('12-01-20');
+    // Open new file and write it
 
-  function getNbDay($arg1, $arg2)
-  {
-    $datetime1 = date_create($arg1);
-    $datetime2 = date_create($arg2);
-    $interval = date_diff($datetime1, $datetime2);
-    return $interval->format('%R%a days');
-  }
+    $myfile = fopen("newfile.php", "w") or die("Unable to open file!");
+    $txt = "<h1>New File !</h1>";
+    fwrite($myfile, $txt); // Then you can require it in this file
 
-  echo getNbDay('19-01-2018', '20-01-2020');
+    // all information of the server
 
-  function increase(&$x): void
-  {
-    $x *= 5;
-  }
+    //  var_dump($_SERVER);
 
-  $xiu = 100;
+    function getMinDate($arg1, $arg2 = false)
+    {
+      $x = strtotime($arg1);
+      if (!$arg2) {
+        $y = time();
+      } else {
+        $y = strtotime($arg2);
+      }
+      if ($x > $y) {
+        return $arg1 . " est plus récent que " . date('d-m-y', $y) . " et son timestamp est " . $x;
+      } elseif ($y > $x) {
+        return date('d-m-y', $y) . " est plus récent que " . $arg1 . " et son timestamp est " . $y;
+      }
+    }
 
-  echo $xiu;
-  increase($xiu);
-  echo $xiu;
+    echo getMinDate('12-01-20');
 
-  echo "<br>";
+    function getNbDay($arg1, $arg2)
+    {
+      $datetime1 = date_create($arg1);
+      $datetime2 = date_create($arg2);
+      $interval = date_diff($datetime1, $datetime2);
+      return $interval->format('%R%a days');
+    }
 
-  echo md5("hllkflkj");
+    echo getNbDay('19-01-2018', '20-01-2020');
 
-  echo "<br>";
+    function increase(&$x): void
+    {
+      $x *= 5;
+    }
 
-  echo password_hash("mohammed", PASSWORD_DEFAULT);
+    $xiu = 100;
 
-  // Null coalescing operator is a shortcut of the ternary operator
+    echo $xiu;
+    increase($xiu);
+    echo $xiu;
 
-  $testoperator = isset($_POST['name']) ? $_POST['name'] : '';
+    echo "<br>";
 
-  $testoperator = $_POST['name'] ?? '';
+    echo md5("hllkflkj");
+
+    echo "<br>";
+
+    echo password_hash("mohammed", PASSWORD_DEFAULT);
+
+    // Null coalescing operator is a shortcut of the ternary operator
+
+    $testoperator = isset($_POST['name']) ? $_POST['name'] : '';
+
+    $testoperator = $_POST['name'] ?? '';
 
 
-  $nameFileDateOfTheDay = date("d-m-Y");
+    $nameFileDateOfTheDay = date("d-m-Y");
 
-  $createFile = "log/$nameFileDateOfTheDay.txt";
+    $createFile = "log/$nameFileDateOfTheDay.txt";
 
-  if (!file_exists($createFile)) {
-    $x = 1;
-    file_put_contents($createFile, $x);
-  } elseif ($_COOKIE['ip'] !== $_SERVER['REMOTE_ADDR']) {
-    $y = (int) file_get_contents($createFile);
-    $y += 1;
-    file_put_contents($createFile, $y);
-  }
-  echo "<br>";
+    if (!file_exists($createFile)) {
+      $x = 1;
+      file_put_contents($createFile, $x);
+    } elseif ($_COOKIE['ip'] !== $_SERVER['REMOTE_ADDR']) {
+      $y = (int) file_get_contents($createFile);
+      $y += 1;
+      file_put_contents($createFile, $y);
+    }
+    echo "<br>";
 
-  ?>
+    ?>
 
-  <a href="?delete=ok">SUPPRIME MOI !<a>
+    <a href="?delete=ok">SUPPRIME MOI !<a>
 
-      <?php
+        <?php
 
-      $testy = $_GET["delete"] ?? "";
+        $testy = $_GET["delete"] ?? "";
 
-      function deleteLog($arg)
-      {
-        if (is_dir($arg)) {
-          array_map('unlink', glob("$arg/*.txt"));
-        } else {
-          return "Ce n'est pas un dossier valide";
+        function deleteLog($arg)
+        {
+          if (is_dir($arg)) {
+            array_map('unlink', glob("$arg/*.txt"));
+          } else {
+            return "Ce n'est pas un dossier valide";
+          }
         }
-      }
 
-      if ($testy == "ok") {
-        deleteLog('log');
-      }
+        if ($testy == "ok") {
+          deleteLog('log');
+        }
 
-      echo "<br>";
+        echo "<br>";
 
-      echo date("d-m-Y", filemtime('./index2.php'));
+        echo date("d-m-Y", filemtime('./index2.php'));
 
-      echo "<br>";
+        echo "<br>";
 
-      var_dump(stat('./index2.php'));
+        var_dump(stat('./index2.php'));
 
-      $txt = nl2br("texte 
+        $txt = nl2br("texte 
       texte
       texte");
 
-      echo $txt;
+        echo $txt;
 
-      // $test = "bonjour";
+        // $test = "bonjour";
 
-      // unset($test);
+        // unset($test);
 
-      // echo $test
-      ?>
-
-      <?= $title ?? "Bonjour"; ?>
-
-      <?= "Heeeeeeeeeyy" ?>
-
-      <?php
+        // echo $test
 
 
-      ?>
-</body>
 
-</html>
+        ?>
+
+        <?= $title ?? "Bonjour"; ?>
+
+        <?= "Heeeeeeeeeyy" ?>
+  </body>
+
+  </html>
+<?php
+  $content = ob_get_contents();
+  file_put_contents('./cache/' . $filename2, $content);
+}
+?>
